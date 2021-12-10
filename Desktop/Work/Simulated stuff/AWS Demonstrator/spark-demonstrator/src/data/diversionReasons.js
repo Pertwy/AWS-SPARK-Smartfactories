@@ -1,0 +1,16 @@
+export const diversionReasons = [
+    "Staff Meeting", 
+    "Break",
+    "Work Instruction",
+    "Training / CI Activity",
+    "Known Material shortage",
+    "Unexpected Part Shortage",
+    "Return Part",
+    "Damaged Part (MRB)",
+    "Unidentified Part",
+    "Quality Issue",
+    "Quality Rework",
+    "Process Safety",
+    "Cleaning",
+    "Alternative reason",
+  ]

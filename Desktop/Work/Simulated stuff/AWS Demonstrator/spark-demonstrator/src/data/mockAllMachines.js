@@ -1,0 +1,1 @@
+export const allMachines = ["machine 1", "machine 2", "machine 3", "machine 4"]

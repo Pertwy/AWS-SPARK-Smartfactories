@@ -1,0 +1,41 @@
+.nav-top{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  height: 10vh
+}
+
+.nav-top .tab{
+  /* border: solid 2px black; */
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  margin-left: 2px;
+  margin-right: 2px;
+  border: 3px solid white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.active{
+  background-color: #61dafb;
+}
+
+/* branding Nestle colour */
+.inactive{
+  background-color:rgba(3,77,144,255);
+}
+
+.tab-label{
+  color: white;
+}
+
+.branding-wrapper{
+    height: 50px;
+    width: 100%;
+    background: url("./nestle.png") ;
+    background-repeat: no-repeat;
+    background-size: contain
+}

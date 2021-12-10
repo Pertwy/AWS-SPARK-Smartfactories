@@ -1,0 +1,63 @@
+input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } 
+#testing only - more rigorous setting should be in place
+
+type Machine @model @aws_api_key {
+  id: ID!
+  name: String!
+  description: String
+  diversions: [Diversion]
+  ragOuter: String
+  ragInner: String
+  mcdown: String
+  currentdowntime: Float
+  cumulativedowntime: Float
+  operators: [String]
+  schedule: [Schedule]
+}
+
+
+type Diversion @model @aws_api_key {
+    id: ID!
+    machineID: ID!
+    machineName: String!
+    code: Code!
+    reason: String
+    timeStart: AWSDateTime
+    timeEnd: AWSDateTime
+}
+
+type Defect @model @aws_api_key {
+    id: ID!
+    timeStart: AWSDateTime
+    image: String
+    resolved: Boolean
+    operatorAllocated: String
+    operatorAttended: String
+    bad: Boolean
+    action: String
+    item: String
+    subitem: String
+    location: String
+}
+
+type Schedule @model @aws_api_key {
+    id: ID!
+    operator: String
+    timeStart: AWSDateTime
+    timeEnd: AWSDateTime
+}
+
+type Tasks @model @aws_api_key {
+    id: ID!
+    machineID: ID!
+    operator: String
+    workflowState: String
+    created: AWSDateTime
+    nextUpdateDue: AWSDateTime
+}
+
+enum Code {
+    Maintenance
+    Planned
+    Unplanned
+}
