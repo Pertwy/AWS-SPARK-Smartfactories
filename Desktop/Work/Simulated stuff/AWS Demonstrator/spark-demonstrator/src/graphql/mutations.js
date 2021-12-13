@@ -290,11 +290,12 @@ export const createTasks = /* GraphQL */ `
   ) {
     createTasks(input: $input, condition: $condition) {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }
@@ -307,11 +308,12 @@ export const updateTasks = /* GraphQL */ `
   ) {
     updateTasks(input: $input, condition: $condition) {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }
@@ -324,11 +326,12 @@ export const deleteTasks = /* GraphQL */ `
   ) {
     deleteTasks(input: $input, condition: $condition) {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }

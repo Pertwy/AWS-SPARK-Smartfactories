@@ -49,11 +49,12 @@ type Schedule @model @aws_api_key {
 
 type Tasks @model @aws_api_key {
     id: ID!
-    machineID: ID!
+    machineName: String
     operator: String
     workflowState: String
     created: AWSDateTime
     nextUpdateDue: AWSDateTime
+    isComplete: Boolean 
 }
 
 enum Code {

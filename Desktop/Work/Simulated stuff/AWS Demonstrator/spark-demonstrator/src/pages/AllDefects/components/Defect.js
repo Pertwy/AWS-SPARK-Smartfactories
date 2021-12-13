@@ -10,17 +10,15 @@ import * as queries from "../../../graphql/queries"
 import * as mutations from "../../../graphql/mutations"
 
 
-export default function Defect(data) {
+export default function Defect({data}) {
 
-    const {id, image, item, location, resolved, subitem } = data.data
+    const {id, image, item, location, resolved, subitem } = data
 
     const [modal, setModal] = useState(false)
     const [user, setUser] = useState("")
     const [action, setAction] = useState("")
 
     let greyed = (resolved) ? "greyed" : ""
-
-
 
     async function handleSave(){
         updateDefect().then(setModal(false) )

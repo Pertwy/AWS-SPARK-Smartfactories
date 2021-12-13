@@ -1,19 +1,14 @@
 import React from 'react'
 import UserDropDown from '../../components/UserDropDown'
-import { allMachines } from '../../data/mockAllMachines'
 import _ from 'lodash';
 
 export default function AssignRolesPage({machines}) {
     
     let results = {}
 
-
     function handleSaveRoles(){
-        //set the roles in the database
         alert("Roles have been saved")
-        console.log(results)
     }
-
 
     function setResults(machine, user){
         results[machine] = user
@@ -29,11 +24,11 @@ export default function AssignRolesPage({machines}) {
                         <th>Set Operator</th>
                     </tr>
                     
-                    {machines.map((machine) => {
+                    {machines.map(({name}) => {
                         return(
                         <tr key={_.uniqueId()}>
-                            <td>{machine.name}</td>
-                            <td><UserDropDown machine={machine.name} setResults={setResults}/></td>
+                            <td>{name}</td>
+                            <td><UserDropDown machine={name} setResults={setResults}/></td>
                         </tr>
                         )
                     })}

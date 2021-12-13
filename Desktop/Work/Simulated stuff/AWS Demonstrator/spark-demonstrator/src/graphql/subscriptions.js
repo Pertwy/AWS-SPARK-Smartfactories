@@ -251,11 +251,12 @@ export const onCreateTasks = /* GraphQL */ `
   subscription OnCreateTasks {
     onCreateTasks {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }
@@ -265,11 +266,12 @@ export const onUpdateTasks = /* GraphQL */ `
   subscription OnUpdateTasks {
     onUpdateTasks {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }
@@ -279,11 +281,12 @@ export const onDeleteTasks = /* GraphQL */ `
   subscription OnDeleteTasks {
     onDeleteTasks {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }

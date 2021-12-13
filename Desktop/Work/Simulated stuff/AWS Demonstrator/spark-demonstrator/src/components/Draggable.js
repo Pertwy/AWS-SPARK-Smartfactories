@@ -43,6 +43,7 @@ export default function Draggable({children, info, updateMachine}) {
             {draggable && (
                 <ul>
                         <li id="txt1" draggable="true" onDragStart={(e)=>{drag_start(e)}}> 
+                            <p>Simulate Sitewise Event                          </p>
                             <select
                                 name="id"
                                 value={machineEditData.id}

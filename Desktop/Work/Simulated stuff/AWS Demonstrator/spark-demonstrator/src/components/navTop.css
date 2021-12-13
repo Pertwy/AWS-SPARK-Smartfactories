@@ -28,6 +28,13 @@
   background-color:rgba(3,77,144,255);
 }
 
+.tasks-active{
+  background-color: rgb(136, 15, 15);
+}
+.tasks-inactive{
+  background-color: rgb(218, 14, 14);
+}
+
 .tab-label{
   color: white;
 }

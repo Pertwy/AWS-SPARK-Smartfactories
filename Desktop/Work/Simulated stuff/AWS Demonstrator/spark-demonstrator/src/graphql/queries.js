@@ -197,11 +197,12 @@ export const getTasks = /* GraphQL */ `
   query GetTasks($id: ID!) {
     getTasks(id: $id) {
       id
-      machineID
+      machineName
       operator
       workflowState
       created
       nextUpdateDue
+      isComplete
       createdAt
       updatedAt
     }
@@ -216,11 +217,12 @@ export const listTasks = /* GraphQL */ `
     listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        machineID
+        machineName
         operator
         workflowState
         created
         nextUpdateDue
+        isComplete
         createdAt
         updatedAt
       }

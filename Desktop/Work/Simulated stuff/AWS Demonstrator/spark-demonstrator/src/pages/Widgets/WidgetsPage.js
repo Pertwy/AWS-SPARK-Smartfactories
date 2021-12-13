@@ -2,9 +2,8 @@ import React, {useState, useEffect} from 'react'
 import { API, graphqlOperation } from 'aws-amplify';
 import {diversionReasons} from "../../data/diversionReasons"
 import _ from 'lodash';
-import * as queries from "../../graphql/queries"
+import moment from 'moment';
 import * as mutations from "../../graphql/mutations"
-import * as subscriptions from "../../graphql/subscriptions"
 
 
 import Widget from './components/Widget'
@@ -13,56 +12,24 @@ import DiversionReason from './components/DiversionReason'
 import Draggable from '../../components/Draggable'
 
 
-export default function WidgetsPage() {
+export default function WidgetsPage({machines}) {
 
     const [selectedMachine, setSelectedMachine] = useState(null)
-    const [widgets, setWidgets] = useState([])
-    const [subWidget, setSubWidget] = useState({})
-
-    useEffect(() => {
-        getMachines()
-        setupCreateMachineSubscription()
-        setupUpdateMachineSubscription()
-
-        // return () => {
-        //   subscriptionOnCreateMachine.unsubscribe()
-        //   subscriptionOnUpdateMachine.unsubscribe()
-        // }
-    }, [subWidget])
-
-
-    let subscriptionOnCreateMachine
-    function setupCreateMachineSubscription(){
-        subscriptionOnCreateMachine = API.graphql(
-        graphqlOperation(subscriptions.onCreateMachine)
-        ).subscribe({
-        next:(data) => {
-            setSubWidget(data.value.data.onCreateMachine)
-        },
-        })
-    }
-
-    let subscriptionOnUpdateMachine
-    function setupUpdateMachineSubscription(){
-        subscriptionOnUpdateMachine = API.graphql(
-        graphqlOperation(subscriptions.onUpdateMachine)
-        ).subscribe({
-        next:(data) => {
-            setSubWidget(data.value.data.onUpdateMachine)
-        },
-        })
-    }
-
-    async function getMachines(){
-        const machineList = await API.graphql({
-            query: queries.listMachines,
-        });
-        setWidgets(machineList['data']["listMachines"]["items"])
-    }
+    let scheduleTest = [
+            {
+                machine:"Dough Mixer #8",
+                operator:"Rapheal"
+            },
+            {
+                machine:"Dough Mixer #3",
+                operator:"Dan"
+            },
+        ]
+    const taskCompletionTime = 60
 
     async function updateMachine(machineEditData){
         await API.graphql(graphqlOperation(mutations.updateMachine, {input: machineEditData}))
-            .then(res => console.log(res))
+            .then(res => createTasks(res.data.updateMachine))
             .catch((err) => console.error(err))
     }
 
@@ -73,41 +40,61 @@ export default function WidgetsPage() {
             .catch((err) => console.error(err))
     }
 
+    async function createTasks({name}){
+        await API.graphql(graphqlOperation(mutations.createTasks, {input: {machineName:name, operator:returnOperator(name), workflowState:"SiteWise Event Error", isComplete: false, nextUpdateDue:newTime(taskCompletionTime)}}))
+            .then(res => console.log(res))
+            .catch((err) => console.error(err))
+    }
+    //nextUpdateDaue: newTime(60)
 
     function handleReasonClick(reason){
         alert(`Assign ${reason} to ${selectedMachine}`)
         createDiversion(reason)
     }
 
+    function returnOperator(machineName){
+        return scheduleTest.filter(element => element.machine === machineName)[0]["operator"]
+    }
+
+    function newTime(taskCompletionTime){
+        return moment().add(taskCompletionTime, 'minutes').format()
+    }
+
+    
+
+    
+
 
     return (
         <div className="widget-section">
-            <Draggable info={widgets} updateMachine={updateMachine}>
+            <Draggable info={machines} updateMachine={updateMachine}>
+            {/* <button onClick={()=>TestTime()}>Test</button> */}
+
             <div className="grid fifth reason-buttons">
                 {diversionReasons.map(diversion => <DiversionReason key={_.uniqueId()} reason={diversion} handleReasonClick={handleReasonClick}/>)}
             </div>
 
             <div className="test">
-            <WidgetWrapper wrap={false}>
-                {widgets.map(widget => {
-                return(
-                    <>
-                        {(widget.ragOuter !== "green" || widget.ragInner !== "green") && (
-                            <Widget 
-                                key={_.uniqueId()}
-                                selectedMachine={selectedMachine} 
-                                setSelectedMachine={setSelectedMachine} 
-                                machineName={widget.name} 
-                                innerRAG={widget.ragOuter} 
-                                outerRAG={widget.ragInner}
-                                mcdown={widget.mcdown} 
-                                currentdowntime={widget.currentdowntime} 
-                                cumulativedowntime={widget.cumulativedowntime} />
-                        ) }
-                    </>
-                )
-                })}
-            </WidgetWrapper>
+                <WidgetWrapper wrap={false}>
+                    {machines.map(({name, ragOuter, ragInner, mcdown, currentdowntime, cumulativedowntime}) => {
+                    return(
+                        <>
+                            {(ragOuter !== "green" || ragInner !== "green") && (
+                                <Widget 
+                                    key={_.uniqueId()}
+                                    selectedMachine={selectedMachine} 
+                                    setSelectedMachine={setSelectedMachine} 
+                                    machineName={name} 
+                                    innerRAG={ragOuter} 
+                                    outerRAG={ragInner}
+                                    mcdown={mcdown} 
+                                    currentdowntime={currentdowntime} 
+                                    cumulativedowntime={cumulativedowntime} />
+                            ) }
+                        </>
+                    )
+                    })}
+                </WidgetWrapper>
             </div>
 
             </Draggable>

@@ -33,7 +33,6 @@ export default function Widget({selectedMachine, setSelectedMachine, machineName
 
 
     return (
-        //  <div onClick={()=>{updateMachine()}} className={`widget`}>
         <div onClick={()=>{setSelectedMachine(machineName)}} className={`widget ${active}`}>
 
             <h5>{machineName}</h5>

@@ -1,24 +1,17 @@
 import React from 'react'
-import { API, graphqlOperation } from 'aws-amplify';
-import Amplify from 'aws-amplify';
 import _ from "lodash"
-import * as queries from "../../graphql/queries"
-import * as mutations from "../../graphql/mutations"
-import * as subscriptions from "../../graphql/subscriptions"
 
-export default function DiversionsPage() {
+export default function DiversionsPage({diversions}) {
     
-    const [diversions, setDiversions] = useState({})
 
-    async function getDiversions(){
-        const diversionList = await API.graphql({
-            query: queries.listDiversions,
-        });
-        setDiversions(diversionList['data']["listDiversions"]["items"])
+    function dateFormat(date){
+        let newDate = new Date(date)
+        return(newDate.toISOString().substring(0, 19).replace("T", " "))
     }
     
     return (
         <div>
+            <button onClick={()=>{console.log(diversions)}}>Test</button>
             <table >
                 <tr>
                     <th>Machine</th>
@@ -28,10 +21,10 @@ export default function DiversionsPage() {
                 
                 {diversions.map((diversion) => {
                     return(
-                    <tr key={_.uniqueId}>
+                    <tr key={_.uniqueId()}>
                         <td>{diversion.machineName}</td>
                         <td>{diversion.reason}</td>
-                        <td>{diversion.createdAt}</td>
+                        <td>{dateFormat(diversion.createdAt)}</td>
                     </tr>
                     )
                 })}

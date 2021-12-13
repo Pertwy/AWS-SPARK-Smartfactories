@@ -1,47 +1,49 @@
 import React from 'react'
 import { tasks } from '../../data/mockTasks'
+import "./tasks.css"
+import { API, graphqlOperation } from 'aws-amplify';
+import Amplify from 'aws-amplify';
+import * as mutations from "../../graphql/mutations"
+import moment from "moment"
+export default function TasksPage({tasks}) {
 
-
-export default function TasksPage() {
-    
-    function handleFix(){
-        alert("Enter how you fixed it??? or what the issue is???")
+    async function updateTasks(id, isComplete){
+        await API.graphql(graphqlOperation(mutations.updateTasks, {input: {id:id, isComplete:!isComplete}}))
+            .then(res => console.log(res))
+            .catch((err) => console.error(err))
     }
 
-    // useEffect(() => {
-    //     if(masterUser){
-    //         console.log(masterUser.toString())
-    //         console.log(tasks.filter(diversion => diversion.operatorOnDuty === "Herald"))
-    //         setFilteredtasks(tasks.filter(diversion => diversion.operatorOnDuty === {masterUser}))
-    //     }
-    // }, [masterUser])
+
+    function dateFormat(date){
+        let newDate = new Date(date)
+        return(newDate.toISOString().substring(0, 19).replace("T", " "))
+    }
+
 
 
     return (
          <div className="table">
-
-            {/* <p >Add some filters</p> */}
 
             <table >
                 <tr>
                     <th>Machine</th>
                     <th>Operator On Duty</th>
                     <th>Workflow State</th>
-                    <th>Next update due</th>
                     <th>Created</th>
+                    <th>Next update due</th>
                     <th>Overdue</th>
                 </tr>
                 
-                {tasks.map((task) => {
+                {tasks.map(({id, machineName, operator, workflowState, createdAt, nextUpdateDue, isComplete}) => {
                     return(
-                    <tr>
-                        <td>{task.machine}</td>
-                        <td>{task.operatorOnDuty}</td>
-                        <td>{task.workflowState}</td>
-                        <td>{task.nextUpdateDue}</td>
-                        <td>{task.timeOfOccurance}</td>
-                        <td>{task.overdue ? "!" : ""}</td>
-                        <td><button onClick={()=>handleFix()}>Fix Issue</button></td>
+                    <tr key={id} className={(isComplete === true) ? "greyed-background" : ""}>
+                        <td>{machineName}</td>
+                        <td>{operator}</td>
+                        <td>{workflowState}</td>
+                        <td>{dateFormat(createdAt)}</td>
+                        <td>{dateFormat(nextUpdateDue)}</td>
+                        <td>{nextUpdateDue <= moment().format() ? "!" : ""}</td>
+                        <td><button onClick={()=>updateTasks(id, isComplete)}>Fix Issue</button></td>
                     </tr>
                     )
                 })}
