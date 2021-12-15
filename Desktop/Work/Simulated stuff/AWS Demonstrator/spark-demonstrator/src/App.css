@@ -124,6 +124,9 @@ td{
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
+.eighth{
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
 
 /* @media (max-width: 768px) {
   .grid-half, .grid-three-one, .grid-one-one-one

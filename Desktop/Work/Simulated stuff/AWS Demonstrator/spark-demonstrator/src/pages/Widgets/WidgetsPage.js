@@ -5,6 +5,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import * as mutations from "../../graphql/mutations"
 
+import {mockSchedule} from "../../data/mockSchedule"
 
 import Widget from './components/Widget'
 import WidgetWrapper from './components/WidgetWrapper'
@@ -15,16 +16,6 @@ import Draggable from '../../components/Draggable'
 export default function WidgetsPage({machines}) {
 
     const [selectedMachine, setSelectedMachine] = useState(null)
-    let scheduleTest = [
-            {
-                machine:"Dough Mixer #8",
-                operator:"Rapheal"
-            },
-            {
-                machine:"Dough Mixer #3",
-                operator:"Dan"
-            },
-        ]
     const taskCompletionTime = 60
 
     async function updateMachine(machineEditData){
@@ -53,7 +44,7 @@ export default function WidgetsPage({machines}) {
     }
 
     function returnOperator(machineName){
-        return scheduleTest.filter(element => element.machine === machineName)[0]["operator"]
+        return mockSchedule.filter(element => element.machine === machineName)[0]["operator"]
     }
 
     function newTime(taskCompletionTime){

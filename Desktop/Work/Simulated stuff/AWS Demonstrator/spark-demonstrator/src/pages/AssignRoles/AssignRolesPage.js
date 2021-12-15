@@ -1,6 +1,10 @@
 import React from 'react'
 import UserDropDown from '../../components/UserDropDown'
+
 import _ from 'lodash';
+import "./assign-roles.css"
+
+import {mockSchedule} from "../../data/mockSchedule"
 
 export default function AssignRolesPage({machines}) {
     
@@ -32,10 +36,23 @@ export default function AssignRolesPage({machines}) {
                         </tr>
                         )
                     })}
-                </table>
-            </div>
 
-            <button onClick={()=>{handleSaveRoles()}}>Save</button>
+                    
+                </table>
+                <button onClick={()=>{handleSaveRoles()}}>Save</button>
+
+                <div className="schedule">
+                    <h3>Schedule</h3>
+                    {mockSchedule.map((element) => {
+                        return(
+                        <div className="row">
+                            <h4>{element.machine}</h4>
+                            <p>-  {element.operator}</p>
+                        </div>
+                        )
+                    })}
+                </div>
+            </div>
         </>
     )
 }

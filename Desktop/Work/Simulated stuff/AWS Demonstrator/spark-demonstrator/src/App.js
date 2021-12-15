@@ -56,87 +56,102 @@ function App() {
 
     const [diversions, setDiversions] = useState([])
 
-    //Unsubscrive needs to be used properly!!!
+
+
+//Machines/////////////////////////////////////////////////////////////////////////////////////////////
     useEffect(() => {
         getMachines()
-        setupCreateMachineSubscription()
-        setupUpdateMachineSubscription()
-
-        // return () => {
-        //   subscriptionOnCreateMachine.unsubscribe()
-        //   subscriptionOnUpdateMachine.unsubscribe()
-        // }
     }, [subMachine])
 
     useEffect(() => {
-        getDefects()
-        setupUpdateDefectSubscription()
-        setupCreateDefectSubscription()
-    }, [subDefect])
+        setupCreateMachineSubscription()
+        return () => {
+          subscriptionOnCreateMachine.unsubscribe()
+        }
+    }, [subMachine])
 
     useEffect(() => {
-        getTasks()
-        setupUpdateTaskSubscription()
-        setupCreateTaskSubscription()
-    }, [subTask])
+        setupUpdateMachineSubscription()
+        return () => {
+          subscriptionOnUpdateMachine.unsubscribe()
+        }
+    }, [subMachine])
 
-    useEffect(() => {
-        getDiversions()
-    }, [])
 
+    async function getMachines(){
+      const machineList = await API.graphql({
+          query: queries.listMachines,
+      });
+      setMachines(machineList['data']["listMachines"]["items"])
+    }
 
     let subscriptionOnCreateMachine
     function setupCreateMachineSubscription(){
-        subscriptionOnCreateMachine = API.graphql(
+      subscriptionOnCreateMachine = API.graphql(
         graphqlOperation(subscriptions.onCreateMachine)
         ).subscribe({
-        next:(data) => {
-            setSubMachine(data.value.data.onCreateMachine)
-        },
-        })
+          next:(data) => {
+              setSubMachine(data.value.data.onCreateMachine)
+          },
+      })
     }
 
     let subscriptionOnUpdateMachine
     function setupUpdateMachineSubscription(){
-        subscriptionOnUpdateMachine = API.graphql(
+      subscriptionOnUpdateMachine = API.graphql(
         graphqlOperation(subscriptions.onUpdateMachine)
         ).subscribe({
-        next:(data) => {
-            setSubMachine(data.value.data.onUpdateMachine)
-        },
-        })
-    }
-
-    async function getMachines(){
-        const machineList = await API.graphql({
-            query: queries.listMachines,
-        });
-        setMachines(machineList['data']["listMachines"]["items"])
+          next:(data) => {
+              setSubMachine(data.value.data.onUpdateMachine)
+          },
+      })
     }
 
 
+
+
+
+//Defects/////////////////////////////////////////////////////////////////////////////////////////////
+
+    useEffect(() => {
+        getDefects()
+    }, [subDefect])
+
+    useEffect(() => {
+        setupUpdateDefectSubscription()
+        return () => {
+          subscriptionOnUpdateDefect.unsubscribe()
+        }
+    }, [subDefect])
+
+    useEffect(() => {
+        setupCreateDefectSubscription()
+        return () => {
+          subscriptionOnCreateDefect.unsubscribe()
+        }
+    }, [subDefect])
 
 
     let subscriptionOnUpdateDefect
     function setupUpdateDefectSubscription(){
-        subscriptionOnUpdateDefect = API.graphql(
-            graphqlOperation(subscriptions.onUpdateDefect)
-            ).subscribe({
+      subscriptionOnUpdateDefect = API.graphql(
+          graphqlOperation(subscriptions.onUpdateDefect)
+          ).subscribe({
             next:(data) => {
                 setSubDefect(data.value.data.onUpdateDefect)
             }
-        })
+      })
     }
 
     let subscriptionOnCreateDefect
     function setupCreateDefectSubscription(){
-        subscriptionOnCreateDefect = API.graphql(
-            graphqlOperation(subscriptions.onCreateDefect)
-            ).subscribe({
+      subscriptionOnCreateDefect = API.graphql(
+          graphqlOperation(subscriptions.onCreateDefect)
+          ).subscribe({
             next:(data) => {
                 setSubDefect(data.value.data.onCreateDefect)
             }
-        })
+      })
     }
 
     async function getDefects(){
@@ -146,6 +161,28 @@ function App() {
         setDefects(defectList['data']["listDefects"]["items"])
     }
 
+
+
+
+
+//Tasks/////////////////////////////////////////////////////////////////////////////////////////////
+    useEffect(() => {
+        getTasks()
+    }, [subTask])
+
+    useEffect(() => {
+        setupUpdateTaskSubscription()
+        return () => {
+          subscriptionOnUpdateTasks.unsubscribe()
+        }
+    }, [subTask])
+
+    useEffect(() => {
+        setupCreateTaskSubscription()
+        return () => {
+          subscriptionOnCreateTasks.unsubscribe()
+        }
+    }, [subTask])
 
     let subscriptionOnCreateTasks
     function setupCreateTaskSubscription(){
@@ -181,12 +218,22 @@ function App() {
     //the tab to turn red (or not)
     function settingTasks(taskList){
       setTasks(taskList['data']["listTasks"]["items"])
+
       let completeTasksTemp =[]
       taskList['data']["listTasks"]["items"].forEach(task => {if(!task.isComplete) completeTasksTemp.push({"id":task.id , "complete":task.isComplete})})
+      
       if(completeTasksTemp.length === 0) {
         setIsOpenTask(false)
       } else setIsOpenTask(true)
     }
+
+
+
+//Diversions/////////////////////////////////////////////////////////////////////////////////////////////    
+
+    useEffect(() => {
+        getDiversions()
+    }, [])
 
     async function getDiversions(){
         const diversionList = await API.graphql({
@@ -194,6 +241,8 @@ function App() {
         });
         setDiversions(diversionList['data']["listDiversions"]["items"])
     }
+
+
 
 
   return (

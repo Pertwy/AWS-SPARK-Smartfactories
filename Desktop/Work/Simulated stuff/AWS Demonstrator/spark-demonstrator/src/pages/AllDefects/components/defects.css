@@ -86,5 +86,5 @@ img{
 .image-grid{
     display: flex;
     justify-content: center;
-    max-height: 200px;
+    max-height: 100px;
 }

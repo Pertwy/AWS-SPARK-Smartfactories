@@ -1,10 +1,11 @@
 import React from 'react'
-import { tasks } from '../../data/mockTasks'
-import "./tasks.css"
 import { API, graphqlOperation } from 'aws-amplify';
-import Amplify from 'aws-amplify';
 import * as mutations from "../../graphql/mutations"
+
+import "./tasks.css"
 import moment from "moment"
+
+
 export default function TasksPage({tasks}) {
 
     async function updateTasks(id, isComplete){
@@ -19,6 +20,17 @@ export default function TasksPage({tasks}) {
         return(newDate.toISOString().substring(0, 19).replace("T", " "))
     }
 
+    function sortString(a, b) {
+        var nameA = dateFormat(a); // ignore upper and lowercase
+        var nameB = dateFormat(b); // ignore upper and lowercase
+        if (nameA < nameB) {
+            return +1;
+        }
+        if (nameA > nameB) {
+            return -1;
+        }
+        return 0;
+    }
 
 
     return (
@@ -34,7 +46,7 @@ export default function TasksPage({tasks}) {
                     <th>Overdue</th>
                 </tr>
                 
-                {tasks.map(({id, machineName, operator, workflowState, createdAt, nextUpdateDue, isComplete}) => {
+                {tasks.sort((a, b) => sortString(a.createdAt, b.createdAt)).map(({id, machineName, operator, workflowState, createdAt, nextUpdateDue, isComplete}) => {
                     return(
                     <tr key={id} className={(isComplete === true) ? "greyed-background" : ""}>
                         <td>{machineName}</td>

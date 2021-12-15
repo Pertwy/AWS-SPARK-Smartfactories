@@ -50,11 +50,17 @@ p, h5, h1, h2, h3, h4{
     width: 90px;
     height:90px;
     margin-right: 5px;
+    display: flex;
+    border-radius: 10px;
+    border: black 2px solid
 }
 
 .inner-widget{
     width: 50px;
     height:50px;
+    margin: auto;
+    border-radius: 10px;
+    border: black 2px solid
 }
 
 .dt p{
@@ -82,18 +88,43 @@ p, h5, h1, h2, h3, h4{
 .white{
     background-color: azure;
 }
+.white-text{
+    color: azure;
+}
+.black{
+    background-color: black;
+}
+.black p {
+    color: azure;
+}
+.grey-background{
+    background-color: grey;
+}
+.grey{
+    color: grey;
+}
 
 
 
 .downtime-wrapper{
     width:150px;
     height:90px;
+    border: 2px solid black;
 }
 
 .dt{
     height: 30px;
-    text-align: center;
+    display: flex;
 }
+
+.dt div{
+    margin: auto;
+}
+
+.mcdown div p{
+    color: azure;
+    font-size: 16px;
+} 
 
 .diversion-reason{
     border-radius: 5px;
