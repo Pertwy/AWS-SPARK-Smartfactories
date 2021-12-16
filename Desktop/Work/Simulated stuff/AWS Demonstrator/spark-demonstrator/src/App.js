@@ -8,7 +8,7 @@ import DisplayMachine from "./AndrewsComponents/DisplayMachine";
 import ModifyMachine from "./AndrewsComponents/ModifyMachine";
 import GrafanaEmbed from "./AndrewsComponents/GrafanaEmbed";
 import GrafanaElementWrapper from './AndrewsComponents/GrafanaElementWrapper';
-import ListMachines from "./AndrewsComponents/ListMachines";
+import ListMachines from "./AndrewsComponents/ListMachines"
 
 import NavTop from './components/NavTop';
 
@@ -221,7 +221,7 @@ function App() {
 
       let completeTasksTemp =[]
       taskList['data']["listTasks"]["items"].forEach(task => {if(!task.isComplete) completeTasksTemp.push({"id":task.id , "complete":task.isComplete})})
-      
+
       if(completeTasksTemp.length === 0) {
         setIsOpenTask(false)
       } else setIsOpenTask(true)
@@ -291,6 +291,14 @@ function App() {
       {/* Widgets selectedTab /////////////////////////////////////////////////////////////////////////////////////////*/}
       {selectedTab==="Assign Roles" && (
         <section >
+          {/* <GrafanaElementWrapper>
+            <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"2"} width={"500"} height={"390"} />
+            <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"4"} width={"500"} height={"130"} />
+          </GrafanaElementWrapper>
+
+          <ModifyMachine id={"2a49e40f-d7b2-4ae2-a6b1-afc80232bb8c"}/>
+
+          <ListMachines/>  */}
           <AssignRolesPage machines={machines}/>
         </section>
       )}
@@ -299,13 +307,6 @@ function App() {
   );
 }
 
-{/* <GrafanaElementWrapper>
-  <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"2"} width={"500"} height={"390"} />
-  <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"4"} width={"500"} height={"130"} />
-</GrafanaElementWrapper>
 
-<ModifyMachine id={"2a49e40f-d7b2-4ae2-a6b1-afc80232bb8c"}/>
-
-<ListMachines/> */}
 
 export default App;

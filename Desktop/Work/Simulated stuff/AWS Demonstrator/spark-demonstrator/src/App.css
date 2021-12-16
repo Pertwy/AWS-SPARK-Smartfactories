@@ -2,6 +2,11 @@
 
 * {box-sizing: border-box}
 
+p, h5, h1, h2, h3, h4{
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
 section {
   height: 87vh;
 }
@@ -127,6 +132,9 @@ td{
 .eighth{
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
+
+
+/*Add a media query to change how many columns there are a different screen widths*/
 
 /* @media (max-width: 768px) {
   .grid-half, .grid-three-one, .grid-one-one-one

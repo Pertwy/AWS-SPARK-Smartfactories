@@ -1,14 +1,9 @@
 import React from 'react'
 import _ from "lodash"
+import { dateFormat } from '../../components/utilityFuncs'
 
 export default function DiversionsPage({diversions}) {
-    
-
-    function dateFormat(date){
-        let newDate = new Date(date)
-        return(newDate.toISOString().substring(0, 19).replace("T", " "))
-    }
-    
+        
     return (
         <div>
             <button onClick={()=>{console.log(diversions)}}>Test</button>

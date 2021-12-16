@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import _ from 'lodash';
+import { sortString } from '../../components/utilityFuncs';
 
 import Widget from '../Widgets/components/Widget'
 import WidgetWrapper from '../Widgets/components/WidgetWrapper'
@@ -9,25 +10,6 @@ export default function AllMachinesPage({machines}) {
 
   const [selectedMachine, setSelectedMachine] = useState(null)
   
-  
-  function dateFormat(date){
-    let newDate = new Date(date)
-    return(newDate.toISOString().substring(0, 19).replace("T", " "))
-  }
-
-  function sortString(a, b) {
-    let nameA = dateFormat(a); // ignore upper and lowercase
-    let nameB = dateFormat(b); // ignore upper and lowercase
-    if (nameA < nameB) {
-        return +1;
-    }
-    if (nameA > nameB) {
-        return -1;
-    }
-    return 0;
-  }
-
-
   return (
     <>
     

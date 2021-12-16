@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import _ from "lodash"
+import GenericDropDown from './GenericDropDown';
 
 
 export default function Draggable({children, info, updateMachine}) {
@@ -57,6 +58,7 @@ export default function Draggable({children, info, updateMachine}) {
                                 })}
                                 
                             </select>
+                            
 
                             <select
                                 name="ragInner"

@@ -26,7 +26,7 @@ export const createMachine = /* GraphQL */ `
       mcdown
       currentdowntime
       cumulativedowntime
-      operators
+      currentOperator
       schedule {
         id
         operator
@@ -65,7 +65,7 @@ export const updateMachine = /* GraphQL */ `
       mcdown
       currentdowntime
       cumulativedowntime
-      operators
+      currentOperator
       schedule {
         id
         operator
@@ -104,7 +104,7 @@ export const deleteMachine = /* GraphQL */ `
       mcdown
       currentdowntime
       cumulativedowntime
-      operators
+      currentOperator
       schedule {
         id
         operator

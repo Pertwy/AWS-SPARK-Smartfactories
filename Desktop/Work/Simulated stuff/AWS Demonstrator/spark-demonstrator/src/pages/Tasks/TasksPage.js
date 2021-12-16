@@ -1,6 +1,7 @@
 import React from 'react'
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from "../../graphql/mutations"
+import { sortString, dateFormat } from '../../components/utilityFuncs';
 
 import "./tasks.css"
 import moment from "moment"
@@ -8,29 +9,15 @@ import moment from "moment"
 
 export default function TasksPage({tasks}) {
 
+    //Fix issue button
+    //Currently inverses the "isComplete" variable for testing
+    //It should set the "isComplete" variable to false
     async function updateTasks(id, isComplete){
         await API.graphql(graphqlOperation(mutations.updateTasks, {input: {id:id, isComplete:!isComplete}}))
             .then(res => console.log(res))
             .catch((err) => console.error(err))
     }
 
-
-    function dateFormat(date){
-        let newDate = new Date(date)
-        return(newDate.toISOString().substring(0, 19).replace("T", " "))
-    }
-
-    function sortString(a, b) {
-        var nameA = dateFormat(a); // ignore upper and lowercase
-        var nameB = dateFormat(b); // ignore upper and lowercase
-        if (nameA < nameB) {
-            return +1;
-        }
-        if (nameA > nameB) {
-            return -1;
-        }
-        return 0;
-    }
 
 
     return (

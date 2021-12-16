@@ -16,11 +16,24 @@ import Draggable from '../../components/Draggable'
 export default function WidgetsPage({machines}) {
 
     const [selectedMachine, setSelectedMachine] = useState(null)
+
+    //This is the time till the "next update due"
     const taskCompletionTime = 60
 
+
+    //Updates machine with the RAG data
+    //This function is passed to the draggable test element 
     async function updateMachine(machineEditData){
         await API.graphql(graphqlOperation(mutations.updateMachine, {input: machineEditData}))
             .then(res => createTasks(res.data.updateMachine))
+            .catch((err) => console.error(err))
+    }
+
+
+    //After the machie rag status is updates, a task is created
+    async function createTasks({name}){
+        await API.graphql(graphqlOperation(mutations.createTasks, {input: {machineName:name, operator:returnOperator(name), workflowState:"SiteWise Event Error", isComplete: false, nextUpdateDue:newTime(taskCompletionTime)}}))
+            .then(res => console.log(res))
             .catch((err) => console.error(err))
     }
 
@@ -31,62 +44,56 @@ export default function WidgetsPage({machines}) {
             .catch((err) => console.error(err))
     }
 
-    async function createTasks({name}){
-        await API.graphql(graphqlOperation(mutations.createTasks, {input: {machineName:name, operator:returnOperator(name), workflowState:"SiteWise Event Error", isComplete: false, nextUpdateDue:newTime(taskCompletionTime)}}))
-            .then(res => console.log(res))
-            .catch((err) => console.error(err))
-    }
-    //nextUpdateDaue: newTime(60)
 
     function handleReasonClick(reason){
         alert(`Assign ${reason} to ${selectedMachine}`)
         createDiversion(reason)
     }
 
+
+    //checks the schedule to see which operator is attached to which machines
     function returnOperator(machineName){
         return mockSchedule.filter(element => element.machine === machineName)[0]["operator"]
     }
 
+
+    //returns the current time + taskCompletionTime
+    //in the AWSDAteTime format
     function newTime(taskCompletionTime){
         return moment().add(taskCompletionTime, 'minutes').format()
     }
-
-    
-
-    
 
 
     return (
         <div className="widget-section">
             <Draggable info={machines} updateMachine={updateMachine}>
-            {/* <button onClick={()=>TestTime()}>Test</button> */}
 
-            <div className="grid fifth reason-buttons">
-                {diversionReasons.map(diversion => <DiversionReason key={_.uniqueId()} reason={diversion} handleReasonClick={handleReasonClick}/>)}
-            </div>
+                <div className="grid fifth reason-buttons">
+                    {diversionReasons.map(diversion => <DiversionReason key={_.uniqueId()} reason={diversion} handleReasonClick={handleReasonClick}/>)}
+                </div>
 
-            <div className="test">
-                <WidgetWrapper wrap={false}>
-                    {machines.map(({name, ragOuter, ragInner, mcdown, currentdowntime, cumulativedowntime}) => {
-                    return(
-                        <>
-                            {(ragOuter !== "green" || ragInner !== "green") && (
-                                <Widget 
-                                    key={_.uniqueId()}
-                                    selectedMachine={selectedMachine} 
-                                    setSelectedMachine={setSelectedMachine} 
-                                    machineName={name} 
-                                    innerRAG={ragOuter} 
-                                    outerRAG={ragInner}
-                                    mcdown={mcdown} 
-                                    currentdowntime={currentdowntime} 
-                                    cumulativedowntime={cumulativedowntime} />
-                            ) }
-                        </>
-                    )
-                    })}
-                </WidgetWrapper>
-            </div>
+                <div className="test">
+                    <WidgetWrapper wrap={false}>
+                        {machines.map(({name, ragOuter, ragInner, currentdowntime, cumulativedowntime}) => {
+                        return(
+                            <>
+                                {/* This only returns the Widget if one of the rag stauses is not green */}
+                                {(ragOuter !== "green" || ragInner !== "green") && (
+                                    <Widget 
+                                        key={_.uniqueId()}
+                                        selectedMachine={selectedMachine} 
+                                        setSelectedMachine={setSelectedMachine} 
+                                        machineName={name} 
+                                        innerRAG={ragOuter} 
+                                        outerRAG={ragInner}
+                                        currentdowntime={currentdowntime} 
+                                        cumulativedowntime={cumulativedowntime} />
+                                ) }
+                            </>
+                        )
+                        })}
+                    </WidgetWrapper>
+                </div>
 
             </Draggable>
         </div>      

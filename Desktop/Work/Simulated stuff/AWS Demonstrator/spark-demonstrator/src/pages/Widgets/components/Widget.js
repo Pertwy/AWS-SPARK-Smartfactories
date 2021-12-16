@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import "./widget.css"
 
 
-export default function Widget({selectedMachine, setSelectedMachine, machineName, innerRAG, outerRAG, mcdown, currentdowntime, cumulativedowntime}) {
+export default function Widget({selectedMachine, setSelectedMachine, machineName, innerRAG, outerRAG, currentdowntime, cumulativedowntime}) {
     
     let active = (machineName===selectedMachine) ? "widget-selected" : ""
     const [counter, setCounter] = useState(0)
 
+    
     let downtimeTopRAG
-
     if(outerRAG === "green"){
         downtimeTopRAG = "grey-background"
     } else if((outerRAG === "amber" && innerRAG === "green") || (outerRAG === "amber" && innerRAG === "amber") || (outerRAG === "red" && innerRAG === "green")) {

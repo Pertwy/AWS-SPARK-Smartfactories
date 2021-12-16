@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default function GenericDropDown({data, def, info, setInfo}) {
+export default function GenericDropDown({name, data, def, info, setInfo}) {
         
     return (
         <>
             <select 
-                name="selectUser"
+                name={name}
                 value={info}
-                onChange={e => setInfo(e.target.value)}
+                onChange={e => setInfo(e)}
             >
 
                 <option value={null}>{def}</option>

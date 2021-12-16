@@ -4,7 +4,6 @@ import SimpleUserDropDown from '../../../components/SimpleUserDropDown'
 import GenericDropDown from '../../../components/GenericDropDown'
 import "./defects.css"
 
-
 import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from "../../../graphql/mutations"
 import Modal from '../../../components/Modal'
@@ -12,6 +11,7 @@ import Modal from '../../../components/Modal'
 
 export default function Defect({data}) {
 
+    //Deconstructed the "data" prop
     const {id, image, item, location, resolved, subitem } = data
 
     const [singleModal, setSingleModal] = useState(false)
@@ -33,12 +33,17 @@ export default function Defect({data}) {
             .catch((err) => console.error(err))
     }
 
+    function handleSetAction(e){
+        setAction(e.target.value)
+    }
+
+
+
     return (
         <div className="image-grid">
 
 
             <img className={`image-list ${greyed}`} onClick={()=>setSingleModal(true)} src={image}></img>
-            {/* <button onClick={()=>console.log(data)}>Test</button> */}
 
 
             <Modal modal={singleModal}>
@@ -54,31 +59,30 @@ export default function Defect({data}) {
 
                         <div className="feedback-wrapper">
                             <div className="good-bad">
-                                {/* <form action=""> */}
-                                    <p>Is this product bad or good?</p>
-                                      <input type="radio" id="good" name="isBad" value="good" onChange={(e)=>{setIsBad(e.target.value)}}/>
-                                      <label for="good">Good</label>
-                                      <input type="radio" id="bad" name="isBad" value="bad" onChange={(e)=>{setIsBad(e.target.value)}}/>
-                                      <label for="bad">Bad</label>
 
-                                    <br></br>
-                                    <br></br>
-                                    
-                                    <p>Operator evaluating defect</p>
-                                    <SimpleUserDropDown user={operatorAttended} setUser={setOperatorAttended}/>
+                                <p>Is this product bad or good?</p>
+                                  <input type="radio" id="good" name="isBad" value="good" onChange={(e)=>{setIsBad(e.target.value)}}/>
+                                  <label for="good">Good</label>
+                                  <input type="radio" id="bad" name="isBad" value="bad" onChange={(e)=>{setIsBad(e.target.value)}}/>
+                                  <label for="bad">Bad</label>
 
-                                    <br></br>
-                                    <br></br>
-                                    
-                                    <p>What action has been taken concerning this defect?</p>
-                                    <GenericDropDown data={defectActions} def="Action Taken" info={action} setInfo={setAction} />
-                                    
+                                <br></br>
+                                <br></br>
+                                
+                                <p>Operator evaluating defect</p>
+                                <SimpleUserDropDown user={operatorAttended} setUser={setOperatorAttended}/>
 
-                                    <br></br>
-                                    <br></br>
+                                <br></br>
+                                <br></br>
+                                
+                                <p>What action has been taken concerning this defect?</p>
+                                <GenericDropDown name="actionTaken" data={defectActions} def="Action Taken" info={action} setInfo={handleSetAction} />
+                                
 
-                                    <button onClick={()=>handleSave()}>Save</button>
-                                {/* </form> */}
+                                <br></br>
+                                <br></br>
+
+                                <button onClick={()=>handleSave()}>Save</button>
 
                             </div>
                         </div>

@@ -11,7 +11,7 @@ type Machine @model @aws_api_key {
   mcdown: String
   currentdowntime: Float
   cumulativedowntime: Float
-  operators: [String]
+  currentOperator: String
   schedule: [Schedule]
 }
 
