@@ -19,7 +19,6 @@ import AllMachinesPage from './pages/AllMachines/AllMachinesPage';
 import TasksPage from './pages/Tasks/TasksPage';
 
 import * as queries from "./graphql/queries"
-import * as mutations from "./graphql/mutations"
 import * as subscriptions from "./graphql/subscriptions"
 import DiversionsPage from './pages/Diversions/DiversionsPage';
 
@@ -275,12 +274,6 @@ function App() {
 
 
       {/* Diversions Tab //////////////////////////////////////////////////////////////////////////////////////////////*/}
-      {selectedTab==="Tasks" && (
-        <section>
-          <TasksPage tasks={tasks}/>
-        </section>
-      )}
-
       {selectedTab==="Diversions" && (
         <section>
           <DiversionsPage diversions={diversions}/>
@@ -291,15 +284,16 @@ function App() {
       {/* Widgets selectedTab /////////////////////////////////////////////////////////////////////////////////////////*/}
       {selectedTab==="Assign Roles" && (
         <section >
-          {/* <GrafanaElementWrapper>
-            <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"2"} width={"500"} height={"390"} />
-            <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"4"} width={"500"} height={"130"} />
-          </GrafanaElementWrapper>
-
-          <ModifyMachine id={"2a49e40f-d7b2-4ae2-a6b1-afc80232bb8c"}/>
-
-          <ListMachines/>  */}
+          
           <AssignRolesPage machines={machines}/>
+        </section>
+      )}
+
+
+      {/* Tasks Tab //////////////////////////////////////////////////////////////////////////////////////////////*/}
+      {selectedTab==="Tasks" && (
+        <section>
+          <TasksPage tasks={tasks}/>
         </section>
       )}
       
@@ -307,6 +301,14 @@ function App() {
   );
 }
 
+/* <GrafanaElementWrapper>
+  <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"2"} width={"500"} height={"390"} />
+  <GrafanaEmbed source={"http://3.80.129.108/d-solo/KM1DvY57z/demo?orgId=1&from="} panelId={"4"} width={"500"} height={"130"} />
+</GrafanaElementWrapper>
+
+<ModifyMachine id={"2a49e40f-d7b2-4ae2-a6b1-afc80232bb8c"}/>
+
+<ListMachines/>  */
 
 
 export default App;
